@@ -1,9 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import connectDB from './config/db.js';
 
 // Load Environment Variables
 dotenv.config();
+
+// Connect to Database
+connectDB();
 
 const app = express();
 

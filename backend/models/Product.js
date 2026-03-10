@@ -14,7 +14,20 @@ const productSchema = mongoose.Schema(
     price: { type: Number, required: true, default: 0 },
     subject: { type: String },
     semester: { type: String },
-    isTopper: { type: Boolean, default: false },
+    isDigital: { type: Boolean, default: false },
+    isFree: { type: Boolean, default: false },
+    fileUrl: { type: String },
+    demoFileUrl: { type: String },
+    status: { 
+      type: String, 
+      enum: ['Available', 'Pending', 'Sold'], 
+      default: 'Available' 
+    },
+    condition: { 
+      type: String, 
+      enum: ['New', 'Like New', 'Good', 'Fair', 'Digital'],
+      default: 'Good'
+    },
   },
   { timestamps: true }
 );

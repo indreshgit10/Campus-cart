@@ -5,20 +5,26 @@ import Signup from "./pages/Signup";
 import Upload from "./pages/Upload";
 import Layout from "./components/layout/Layout";
 import { AuthProvider } from "./context/AuthContext";
+import { ProductProvider } from "./context/ProductContext";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/upload" element={<Upload />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <ProductProvider>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/upload" element={<Upload />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/notes/:subject/:unit" element={<ProductDetails />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </ProductProvider>
     </AuthProvider>
   );
 }

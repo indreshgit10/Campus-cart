@@ -6,6 +6,7 @@ export const ProductContext = createContext();
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -43,6 +44,19 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const updateProduct = async (id, productData) => {
+    try {
+      const { data } = await api.put(`/products/${id}`, productData);
+      setProducts((prev) =>
+        prev.map((p) => ((p._id || p.id) === id ? data : p))
+      );
+      return data;
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -50,7 +64,10 @@ export const ProductProvider = ({ children }) => {
         loading,
         addProduct,
         deleteProduct,
+        updateProduct,
         refreshProducts: fetchProducts,
+        editingProduct,
+        setEditingProduct,
       }}
     >
       {children}

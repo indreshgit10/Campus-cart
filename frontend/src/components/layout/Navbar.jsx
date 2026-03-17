@@ -1,12 +1,12 @@
 import { useNavigate, Link } from "react-router-dom";
 import { ShoppingBag, MessageSquare, PlusCircle, User, LayoutDashboard, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  // Placeholder for auth state, will be integrated later
-  const user = null; 
-  const logout = () => console.log("Logout clicked");
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <nav className="sticky top-0 z-50 w-full glass-premium border-b-0">
@@ -74,25 +74,39 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/my-listings" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2 group">
-            <LayoutDashboard size={18} className="group-hover:rotate-6 transition-transform" />
-            My Listings
-          </Link>
-          <Link to="/inbox" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2 group">
-            <MessageSquare size={18} className="group-hover:-translate-y-0.5 transition-transform" />
-            Inbox
-          </Link>
+          {user && (
+            <>
+              <Link to="/my-listings" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2 group">
+                <LayoutDashboard size={18} className="group-hover:rotate-6 transition-transform" />
+                My Listings
+              </Link>
+              <Link to="/inbox" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2 group" onClick={(e) => { e.preventDefault(); alert("Messaging coming in Phase 3."); }}>
+                <MessageSquare size={18} className="group-hover:-translate-y-0.5 transition-transform" />
+                Inbox
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
           {user ? (
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex flex-col items-end">
-                <span className="text-xs font-black text-white">{user.name}</span>
-                <span className="text-[10px] font-bold text-primary tracking-widest uppercase">Member</span>
-              </div>
+              <Link to={`/user/${user._id || user.id}`} className="hidden sm:flex items-center gap-3 hover:bg-white/5 p-2 rounded-xl transition-all cursor-pointer">
+                <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-black shadow-inner border border-primary/20">
+                  {user.profilePicture ? (
+                    <img src={user.profilePicture} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                  ) : (
+                    user.name?.charAt(0)?.toUpperCase() || "U"
+                  )}
+                </div>
+                <div className="flex flex-col items-start bg-transparent">
+                  <span className="text-xs font-black text-white">{user.name}</span>
+                  <span className="text-[10px] font-bold text-primary tracking-widest uppercase">Profile</span>
+                </div>
+              </Link>
               <button 
                 onClick={logout}
+                title="Logout"
                 className="p-3 bg-white/5 hover:bg-rose-500/10 text-muted-foreground hover:text-rose-500 rounded-xl transition-all border border-white/5 group"
               >
                 <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />

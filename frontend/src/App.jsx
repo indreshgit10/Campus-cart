@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Upload from "./pages/Upload";
+import UserProfile from "./pages/UserProfile";
+import MyListings from "./pages/MyListings";
 import Layout from "./components/layout/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { ProductProvider } from "./context/ProductContext";
@@ -19,6 +21,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/upload" element={<Upload />} />
+              <Route path="/user/:id" element={<UserProfile />} />
+              <Route path="/my-listings" element={<MyListings />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/notes/:subject/:unit" element={<ProductDetails />} />
             </Routes>

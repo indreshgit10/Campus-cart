@@ -80,7 +80,7 @@ const Navbar = () => {
                 <LayoutDashboard size={18} className="group-hover:rotate-6 transition-transform" />
                 My Listings
               </Link>
-              <Link to="/inbox" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2 group" onClick={(e) => { e.preventDefault(); alert("Messaging coming in Phase 3."); }}>
+              <Link to="/inbox" className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2 group">
                 <MessageSquare size={18} className="group-hover:-translate-y-0.5 transition-transform" />
                 Inbox
               </Link>

@@ -9,6 +9,8 @@ import Layout from "./components/layout/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { ProductProvider } from "./context/ProductContext";
 import ProductDetails from "./pages/ProductDetails";
+import Inbox from "./pages/Inbox";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
               <Route path="/my-listings" element={<MyListings />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/notes/:subject/:unit" element={<ProductDetails />} />
+              <Route path="/inbox" element={<Inbox />} />
+              <Route path="/chat/:productId" element={<Chat />} />
             </Routes>
           </Layout>
         </BrowserRouter>

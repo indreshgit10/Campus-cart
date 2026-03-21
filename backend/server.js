@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import { proxyPDF, getCloudinarySignature } from './controllers/pdfController.js';
 
 // Load Environment Variables
 dotenv.config();
@@ -25,6 +26,9 @@ app.use('/api/users', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/upload', uploadRoutes);
+
+app.get('/api/pdf-proxy', proxyPDF);
+app.get('/api/cloudinary/sign', getCloudinarySignature);
 
 // Base Route
 app.get('/', (req, res) => {

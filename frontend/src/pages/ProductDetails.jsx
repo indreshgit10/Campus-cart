@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import api from "../utils/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, User, IndianRupee, MapPin, Star, FileText, Loader2, Heart, Share2, X } from "lucide-react";
+import { ArrowLeft, User, IndianRupee, MapPin, Star, FileText, Loader2, Heart, Share2, X, MessageSquare } from "lucide-react";
 import SecurePDFViewer from "../components/SecurePDFViewer";
 import { AuthContext } from "../context/AuthContext";
 
@@ -143,6 +143,22 @@ const ProductDetails = () => {
                  <button onClick={() => setShowPdf(true)} className="h-20 px-8 bg-blue-600 hover:bg-blue-500 text-white rounded-3xl font-black flex items-center justify-center gap-3 transition-all active:scale-95">
                    <FileText size={24} />
                    Read Document
+                 </button>
+               )}
+               {!product.isDigital && product.user?.isAdmin && (
+                 <button 
+                  onClick={() =>
+                    navigate(`/chat/${product._id || product.id}`, {
+                      state: {
+                        sellerName: product?.user?.name || "Seller",
+                        sellerId: product?.user?._id || product?.user,
+                        productTitle: product.title || product.name,
+                      },
+                    })
+                  }
+                  className="flex-1 h-20 bg-indigo-600 hover:bg-indigo-500 text-white rounded-3xl font-black text-sm uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center gap-3 transition-all active:scale-95">
+                   <MessageSquare size={20} />
+                   Contact Seller
                  </button>
                )}
              </div>

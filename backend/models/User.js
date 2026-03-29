@@ -9,6 +9,8 @@ const userSchema = mongoose.Schema(
     bio: { type: String, default: '' },
     profilePicture: { type: String, default: '' },
     isAdmin: { type: Boolean, required: true, default: false },
+    otp: { type: String },
+    otpExpires: { type: Date },
   },
   { timestamps: true }
 );

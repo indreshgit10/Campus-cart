@@ -230,7 +230,7 @@ const UserProfile = () => {
               ) : (
                 userProfile?.isAdmin && (
                   <button
-                    onClick={() => alert("Messaging coming in Phase 3.")}
+                    onClick={() => navigate(`/chat/user-${product?.user?._id || id}`)}
                     className="w-full md:w-auto px-10 h-16 button-premium-primary rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-xl flex items-center justify-center gap-3 transition-transform hover:scale-105"
                   >
                     <MessageSquare size={20} />

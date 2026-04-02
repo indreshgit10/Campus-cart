@@ -1,5 +1,18 @@
 import Product from '../models/Product.js';
 
+const slugify = (text) => {
+  if (!text) return "";
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
 // @desc    Fetch all products
 // @route   GET /api/products
 export const getProducts = async (req, res) => {
@@ -15,7 +28,7 @@ export const getProducts = async (req, res) => {
 // @route   POST /api/products
 // @access  Private
 export const createProduct = async (req, res) => {
-  const { name, price, description, image, category, subject, semester, isTopper, isDigital, isFree, fileUrl, demoFileUrl } = req.body;
+  const { name, price, description, image, category, subject, semester, unit, isTopper, isDigital, isFree, fileUrl, demoFileUrl } = req.body;
 
   try {
     const product = new Product({
@@ -27,12 +40,18 @@ export const createProduct = async (req, res) => {
       category,
       subject,
       semester,
+      unit,
       isTopper,
       isDigital,
       isFree,
       fileUrl,
       demoFileUrl,
     });
+
+    if (category === 'Notes' && subject && unit) {
+      product.subjectSlug = slugify(subject);
+      product.slug = `${product.subjectSlug}-${slugify(unit)}-notes`;
+    }
 
     const createdProduct = await product.save();
     const populatedProduct = await Product.findById(createdProduct._id).populate('user', 'name');
@@ -54,7 +73,7 @@ export const updateProduct = async (req, res) => {
       return res.status(401).json({ message: 'User not authorized' });
     }
 
-    const { name, price, description, image, category, subject, semester, isTopper, isDigital, isFree, fileUrl, demoFileUrl } = req.body;
+    const { name, price, description, image, category, subject, semester, unit, isTopper, isDigital, isFree, fileUrl, demoFileUrl } = req.body;
 
     product.name = name ?? product.name;
     product.price = price ?? product.price;
@@ -63,11 +82,17 @@ export const updateProduct = async (req, res) => {
     product.category = category ?? product.category;
     product.subject = subject ?? product.subject;
     product.semester = semester ?? product.semester;
+    product.unit = unit ?? product.unit;
     product.isTopper = isTopper ?? product.isTopper;
     product.isDigital = isDigital ?? product.isDigital;
     product.isFree = isFree ?? product.isFree;
     if (fileUrl !== undefined) product.fileUrl = fileUrl;
     if (demoFileUrl !== undefined) product.demoFileUrl = demoFileUrl;
+
+    if (product.category === 'Notes' && product.subject && product.unit) {
+      product.subjectSlug = slugify(product.subject);
+      product.slug = `${product.subjectSlug}-${slugify(product.unit)}-notes`;
+    }
 
     const updated = await product.save();
     const populated = await Product.findById(updated._id).populate('user', 'name');
@@ -106,6 +131,49 @@ export const getMyProducts = async (req, res) => {
   try {
     const products = await Product.find({ user: req.user._id });
     res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get product by subject and unit (SEO)
+// @route   GET /api/products/notes/:subject/:unit
+export const getProductBySlug = async (req, res) => {
+  try {
+    const { subject, unit } = req.params;
+    const subjectQuery = {
+      $or: [
+        { subjectSlug: subject },
+        { subject: new RegExp(`^${subject.replace(/-/g, ' ')}$`, 'i') }
+      ]
+    };
+
+    let unitQuery;
+    if (unit.toLowerCase() === 'full-notes') {
+      unitQuery = {
+        $or: [
+          { unit: new RegExp(`^full-notes$`, 'i') },
+          { unit: { $exists: false } },
+          { unit: null },
+          { unit: '' }
+        ]
+      };
+    } else {
+      unitQuery = { unit: new RegExp(`^${unit}$`, 'i') };
+    }
+
+    const product = await Product.findOne({
+      category: 'Notes',
+      ...subjectQuery,
+      ...unitQuery
+    }).populate('user', 'name');
+
+
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404).json({ message: 'Note not found' });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

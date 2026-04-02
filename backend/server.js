@@ -13,6 +13,7 @@ import uploadRoutes from './routes/uploadRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import { proxyPDF, getCloudinarySignature } from './controllers/pdfController.js';
 import Message from './models/Message.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 // Load Environment Variables
 dotenv.config();
@@ -105,6 +106,9 @@ io.on('connection', (socket) => {
 app.get('/', (req, res) => {
   res.send('CampusCart API is running...');
 });
+
+app.use(notFound);
+app.use(errorHandler);
 
 // Start Server
 if (process.env.NODE_ENV !== 'test') {

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, User, IndianRupee, MapPin, Star, FileText, Loader2, Heart, Share2, X, MessageSquare } from "lucide-react";
 import SecurePDFViewer from "../components/SecurePDFViewer";
 import { AuthContext } from "../context/AuthContext";
+import { slugify } from "../utils/slugify";
 
 const ProductDetails = () => {
   const { id, subject, unit } = useParams();
@@ -20,17 +21,18 @@ const ProductDetails = () => {
       try {
         setLoading(true);
         let data;
-        if (id) {
+        if (subject && unit) {
+          const res = await api.get(`/products/notes/${subject}/${unit}`);
+          data = res.data;
+        } else if (id) {
           const res = await api.get(`/products/${id}`);
           data = res.data;
-        } else if (subject && unit) {
-          // This would require a backend route for slug lookups
-          // For now, let's assume we redirect or have a placeholder for this logic
-          // As per the reference, they fetch by subject/unit
-          // But our current backend only has /api/products/:id
-          // I will stick to id-based fetching for now to ensure it works
-          const res = await api.get("/products");
-          data = res.data.find(p => p.subject === subject); // Simple fallback search
+
+          if (data.category === 'Notes' && data.subject) {
+            const unitSlug = data.unit || "full-notes";
+            navigate(`/notes/${slugify(data.subject)}/${slugify(unitSlug)}`, { replace: true });
+            return;
+          }
         }
         setProduct(data);
       } catch (error) {
@@ -40,7 +42,22 @@ const ProductDetails = () => {
       }
     };
     fetchProduct();
-  }, [id, subject, unit]);
+  }, [id, subject, unit, navigate]);
+
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.name} | CampusCart`;
+      let metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        metaDescription = document.createElement('meta');
+        metaDescription.name = "description";
+        document.head.appendChild(metaDescription);
+      }
+      metaDescription.setAttribute('content', product.description?.substring(0, 150) || '');
+    } else {
+      document.title = 'Product Details | CampusCart';
+    }
+  }, [product]);
 
   if (loading) return (
     <div className="flex flex-col items-center justify-center py-32 space-y-4">

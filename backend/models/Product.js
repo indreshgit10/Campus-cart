@@ -14,10 +14,13 @@ const productSchema = mongoose.Schema(
     price: { type: Number, required: true, default: 0 },
     subject: { type: String },
     semester: { type: String },
+    unit: { type: String },
     isDigital: { type: Boolean, default: false },
     isFree: { type: Boolean, default: false },
     fileUrl: { type: String },
     demoFileUrl: { type: String },
+    subjectSlug: { type: String },
+    slug: { type: String },
     status: { 
       type: String, 
       enum: ['Available', 'Pending', 'Sold'], 

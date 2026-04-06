@@ -1,6 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import hpp from 'hpp';
+import compression from 'compression';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
@@ -26,6 +30,21 @@ const httpServer = createServer(app);
 
 // Middlewares
 app.use(cors());
+
+// Security Middlewares
+app.use(helmet());
+app.use(hpp());
+
+// Performance Testing
+app.use(compression());
+
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100, 
+});
+app.use('/api/', limiter);
+
 app.use(express.json());
 
 const io = new Server(httpServer, {

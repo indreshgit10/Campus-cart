@@ -35,5 +35,12 @@ const productSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+// Performance: Indexing frequently queried fields
+productSchema.index({ name: 'text', description: 'text' });
+productSchema.index({ category: 1 });
+productSchema.index({ user: 1 });
+productSchema.index({ subjectSlug: 1, unit: 1 });
+productSchema.index({ slug: 1 });
+
 const Product = mongoose.model('Product', productSchema);
 export default Product;

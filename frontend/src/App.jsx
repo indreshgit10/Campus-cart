@@ -1,16 +1,18 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Upload from "./pages/Upload";
-import UserProfile from "./pages/UserProfile";
-import MyListings from "./pages/MyListings";
 import Layout from "./components/layout/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { ProductProvider } from "./context/ProductContext";
-import ProductDetails from "./pages/ProductDetails";
-import Inbox from "./pages/Inbox";
-import Chat from "./pages/Chat";
+
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Upload = lazy(() => import("./pages/Upload"));
+const UserProfile = lazy(() => import("./pages/UserProfile"));
+const MyListings = lazy(() => import("./pages/MyListings"));
+const ProductDetails = lazy(() => import("./pages/ProductDetails"));
+const Inbox = lazy(() => import("./pages/Inbox"));
+const Chat = lazy(() => import("./pages/Chat"));
 
 function App() {
   return (
@@ -18,18 +20,20 @@ function App() {
       <ProductProvider>
         <BrowserRouter>
           <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/upload" element={<Upload />} />
-              <Route path="/user/:id" element={<UserProfile />} />
-              <Route path="/my-listings" element={<MyListings />} />
-              <Route path="/product/:id" element={<ProductDetails />} />
-              <Route path="/notes/:subject/:unit" element={<ProductDetails />} />
-              <Route path="/inbox" element={<Inbox />} />
-              <Route path="/chat/:productId" element={<Chat />} />
-            </Routes>
+            <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading...</div>}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/upload" element={<Upload />} />
+                <Route path="/user/:id" element={<UserProfile />} />
+                <Route path="/my-listings" element={<MyListings />} />
+                <Route path="/product/:id" element={<ProductDetails />} />
+                <Route path="/notes/:subject/:unit" element={<ProductDetails />} />
+                <Route path="/inbox" element={<Inbox />} />
+                <Route path="/chat/:productId" element={<Chat />} />
+              </Routes>
+            </Suspense>
           </Layout>
         </BrowserRouter>
       </ProductProvider>

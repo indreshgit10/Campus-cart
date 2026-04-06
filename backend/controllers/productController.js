@@ -17,7 +17,7 @@ const slugify = (text) => {
 // @route   GET /api/products
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({}).populate('user', 'name');
+    const products = await Product.find({}).populate('user', 'name').lean();
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -129,7 +129,7 @@ export const deleteProduct = async (req, res) => {
 // @access  Private
 export const getMyProducts = async (req, res) => {
   try {
-    const products = await Product.find({ user: req.user._id });
+    const products = await Product.find({ user: req.user._id }).lean();
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -166,7 +166,7 @@ export const getProductBySlug = async (req, res) => {
       category: 'Notes',
       ...subjectQuery,
       ...unitQuery
-    }).populate('user', 'name');
+    }).populate('user', 'name').lean();
 
 
     if (product) {

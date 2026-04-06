@@ -1,0 +1,3 @@
+STATUS: 200
+BODY: CampusCart API is running...
+error: false

@@ -3,7 +3,7 @@
 Campus Cart is a comprehensive e-commerce marketplace platform built specifically for college students to buy and sell items within their campus community. 
 
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 **Frontend:**
 - React (Vite)
@@ -30,7 +30,7 @@ Campus Cart is a comprehensive e-commerce marketplace platform built specificall
 - **SEO Optimized:** Friendly routing logic incorporating URL slugs and units.
 - **Email Delivery:** Fast, reliable OTP-based password recovery integrated with the Resend API.
 
-## 📦 Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository:**
    ```bash

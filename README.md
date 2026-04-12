@@ -2,6 +2,7 @@
 
 Campus Cart is a comprehensive e-commerce marketplace platform built specifically for college students to buy and sell items within their campus community. 
 
+**Live Link:** https://www.campuscarts.in/ 
 
 ## Technology Stack
 
@@ -18,7 +19,7 @@ Campus Cart is a comprehensive e-commerce marketplace platform built specificall
 - Cloudinary 
 - Resend API
 
-- 
+
 ## Features
 
 - **User Authentication:** Secure signup and login using JWT.

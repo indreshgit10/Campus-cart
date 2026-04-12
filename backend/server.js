@@ -22,14 +22,17 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 // Load Environment Variables
 dotenv.config();
 
-// Connect to Database
-connectDB();
+// Database connection will be initiated in startServer
 
 const app = express();
 const httpServer = createServer(app);
 
-// Middlewares
-app.use(cors());
+// Middlewares - CRITICAL: CORS must be first
+app.use(cors({
+  origin: "*", 
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Security Middlewares
 app.use(helmet());
@@ -45,7 +48,13 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
+
+// Health check to confirm server is up even if DB is slow
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date() });
+});
 
 const io = new Server(httpServer, {
   cors: {
@@ -129,12 +138,26 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// Start Server
-if (process.env.NODE_ENV !== 'test') {
+// 7. Start Server
+const startServer = async () => {
   const PORT = process.env.PORT || 5000;
-  httpServer.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
+  
+  if (process.env.NODE_ENV !== 'test') {
+    // Start listening immediately so cloud health-checks pass
+    httpServer.listen(PORT, () => {
+      console.log(`🚀 Server starting on port ${PORT}...`);
+      console.log(`🔌 Initializing MongoDB connection...`);
+    });
+  }
+
+  try {
+    await connectDB();
+    console.log('✅ Server is fully operational and connected to DB.');
+  } catch (err) {
+    console.error('❌ CRITICAL: Database connection failed during startup:', err.message);
+  }
+};
+
+startServer();
 
 export { app, httpServer };

@@ -2,16 +2,6 @@
 
 Campus Cart is a comprehensive e-commerce marketplace platform built specifically for college students to buy and sell items within their campus community. 
 
-## 🚀 Features
-
-- **User Authentication:** Secure signup and login using JWT.
-- **Product Management:** Complete CRUD capabilities for listings with integrated image uploading via Cloudinary.
-- **Real-Time Next-Gen Chat:** Integrated inbox and real-time chat powered by Socket.io, with conditional seller messaging restrictions.
-- **Secure File Viewing:** PDF proxy viewer for securely accessing digital materials or proof of purchase without direct downloads.
-- **User Dashboard:** A comprehensive dashboard to manage profile, active product listings, and messages.
-- **Security & Performance:** Robust protection using Helmet, HPP, expressive rate-limiting, and compression. 
-- **SEO Optimized:** Friendly routing logic incorporating URL slugs and units.
-- **Email Delivery:** Fast, reliable OTP-based password recovery integrated with the Resend API.
 
 ## 🛠️ Technology Stack
 
@@ -23,10 +13,22 @@ Campus Cart is a comprehensive e-commerce marketplace platform built specificall
 **Backend:**
 - Node.js & Express.js
 - MongoDB & Mongoose
-- Socket.io (WebSockets)
-- JWT (JSON Web Tokens)
-- Cloudinary (Image Management)
-- Resend API (Email)
+- Socket.io 
+- JWT 
+- Cloudinary 
+- Resend API
+
+- 
+## Features
+
+- **User Authentication:** Secure signup and login using JWT.
+- **Product Management:** Complete CRUD capabilities for listings with integrated image uploading via Cloudinary.
+- **Real-Time Chat:** Integrated inbox and real-time chat powered by Socket.io, with conditional seller messaging restrictions.
+- **Secure File Viewing:** PDF viewer for securely accessing digital materials or proof of purchase without direct downloads.
+- **User Dashboard:** A comprehensive dashboard to manage profile, active product listings, and messages.
+- **Security & Performance:** Robust protection using Helmet, HPP, expressive rate-limiting, and compression. 
+- **SEO Optimized:** Friendly routing logic incorporating URL slugs and units.
+- **Email Delivery:** Fast, reliable OTP-based password recovery integrated with the Resend API.
 
 ## 📦 Installation & Setup
 
@@ -63,9 +65,3 @@ Campus Cart is a comprehensive e-commerce marketplace platform built specificall
    npm run dev
    ```
 
-## 🌐 Deployment Details
-
-The `server.js` starts the HTTP server completely independently of the database connection synchronously to ensure cloud provider health checks consistently pass deployments (e.g., Vercel, Render) while it seamlessly attempts establishing secure database ties in the background.
-
-## 📄 License
-This project is licensed under the MIT License.

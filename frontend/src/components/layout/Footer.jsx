@@ -7,7 +7,7 @@ const Footer = () => {
         
         <div className="flex flex-col items-center space-y-2">
           <p className="text-base text-muted-foreground flex items-center justify-center gap-1.5 font-medium">
-            Designed and Developed by by Indresh
+            Designed and Developed by Indresh
           </p>
           <p className="text-xs text-muted-foreground/80 font-medium tracking-wide uppercase max-w-lg">
             computer science and engineering, PRANVEER SINGH INSTITUTE OF TECHNOLOGY

@@ -28,15 +28,7 @@ const Footer = () => {
             >
               <Linkedin className="w-5 h-5" />
             </a>
-            <a 
-              href="https://www.instagram.com/indreshh_._/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-2 rounded-full bg-pink-500/10 text-pink-500 hover:bg-pink-500/20 transition-colors duration-200"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-5 h-5" />
-            </a>
+            
           </div>
         </div>
         
